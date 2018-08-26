@@ -1,10 +1,10 @@
 $(document).ready( ()=> {
 
-    const design = document.getElementById('design');
-    const color = document.getElementById('color');
-    const name = $("#name").val();
-    const mail = $("#mail").val();
-    const activities = document.querySelectorAll('input [type = checkbox]');
+    //const design = document.getElementById('design');
+    //const color = document.getElementById('color');
+    //const name = $("#name").val();
+    //const mail = $("#mail").val();
+    //const activities = document.querySelectorAll('input [type = checkbox]');
 
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -40,7 +40,7 @@ $(document).ready( ()=> {
             $(".puns").show();
             $(".heart").show();
         }
-    });
+    });  
 
     //Checkbox Section 1
     $(".mix1").click(() => {
@@ -125,13 +125,15 @@ $(document).ready( ()=> {
     //Validating Section  
     const valName = ()=> {
         const nameRegex = /^[A-Za-z\s]{3,20}$/i;
-        name = $("#name").val();
-        if (name === '') {
+        let name = $("#name").val();
+        if (!nameRegex.test(name)) {
+            
             alert('Please type a valid name');
             console.log(' name invalid');
             $("#name-error").show();
             $(".e").css('color', 'red');
             $("#name").focus();
+            //e.preventDefault();
             return false;
         }
             console.log(' valid name');        
@@ -141,8 +143,9 @@ $(document).ready( ()=> {
     
     const valMail = ()=> {
         const Mailregex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        mail = $("#mail").val();
+        let mail = $("#mail").val();
         if (mail === '' || !Mailregex.test(mail)) {
+            //e.preventDefault();
             alert('Please type a valid e-mail address');
             console.log(' wrong email');
             $("#mail-error").show();
@@ -159,6 +162,7 @@ $(document).ready( ()=> {
     const valCheckbox = () => {
        let checkedbox = $('input:checked').length; // Indica que algun checkbox a sido seleccionado
         if (!checkedbox) { // negacion de que ningun checkbox fue checado
+            //e.preventDefault();
             $('#activities-error').show();
             console.log("activities has  not been checked");
             return false;
@@ -173,9 +177,9 @@ $(document).ready( ()=> {
         
         const ccNum = document.getElementById('cc-num').value; 
          if (ccNum.length !== 16 && ccNum.length !== 13 || isNaN(ccNum) || ccNum === "") {
-            
+            //e.preventDefault();
             alert("Credit Card field is invalid");
-             console.log(' invalid credit card');
+            console.log(' invalid credit card');
 
             $("#ccnum-error").show();
             $(".e").css('color', 'red');
@@ -192,6 +196,7 @@ $(document).ready( ()=> {
     const zipC = () => {
         const zip = document.getElementById('zip').value;
         if (zip.length !== 5 || isNaN(zip) || zip === "") {
+            //e.preventDefault();
             console.log('invalid zip');
 
             alert("Zip field invalid");
@@ -209,6 +214,7 @@ $(document).ready( ()=> {
     const cvvC = () => {
         const cvv = document.getElementById('cvv').value;
         if (cvv.length !== 3 || isNaN(cvv) || cvv === "") {
+            //e.preventDefault();
             console.log(' invalid cvv');
 
             alert("CVV field invalid");
@@ -224,38 +230,36 @@ $(document).ready( ()=> {
 
     // validation 
     const val = () => {
+        
         let payment = $('#payment').val()
         if (payment === 'select_method'){
-            //if (valName() || valMail() || valCheckbox()){
-            $("#name-error").show();
-            $("#mail-error").show();
-            $("#activities-error").show();
-            $("#ccnum-error").show();
-            $("#zip-error").show();
-            $("#cvv-error").show();
+            if (valName() && valMail() && valCheckbox()){
+               alert("Select your payment method")
             
-            alert("Don't  forget to select any payment method, and please make sure don't let any text field empty")
-            
-           // }
             return false;
+            }
+        return true;
         }
         if (payment === 'paypal' || payment === 'bitcoin') {
-         
-            alert('Your data has been upload')
+            if ( valName() || valMail() || valCheckbox()) {
+                alert('Your data has been upload')
             return valName() && valMail() && valCheckbox();
+            }
+        return true;
         }
         if ( payment === 'credit-card') { 
-            //if (valName() || valMail() || valCheckbox() || cCard() && zipC() && cvvC()) {
-            
-                alert("Don't  forget to select any payment method, and please make sure don't let any text field empty")
+            if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
+                alert("The form has been filled successfully")
+            return false; 
+            }
+        return true;
+        }
+    }   
+        
+    // Click event for submmit the form validation
+    $('#btn').click( (e)=> {
+        e.preventDefault();
+        val()
+    });
 
-            return valName() && valMail() && cCard() && zipC() && cvvC(); 
-            //return false; 
-
-       // }
-            return false;
-    }
-}
-        // Click event for submmit the form validation
-        $('#btn').click( ()=> val());
 })
