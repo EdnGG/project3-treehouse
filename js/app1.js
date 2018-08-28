@@ -1,11 +1,5 @@
 $(document).ready( ()=> {
 
-    //const design = document.getElementById('design');
-    //const color = document.getElementById('color');
-    //const name = $("#name").val();
-    //const mail = $("#mail").val();
-    //const activities = document.querySelectorAll('input [type = checkbox]');
-
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     // Focus on the first TextField
@@ -90,6 +84,8 @@ $(document).ready( ()=> {
     $('.paypal').hide();
     $('.credit-card').hide();
 
+
+       
     $('#payment').change( function() {
         if (this.value === 'select_method') {
             $('.credit-card').hide();
@@ -230,46 +226,31 @@ $(document).ready( ()=> {
 
     // validation 
     const val = () => {
-        
+
         let payment = $('#payment').val()
-        if (payment === 'select_method'){
-            if (valName() && valMail() && valCheckbox()){
-               alert("Select your payment method")
-            //e.preventDefault();
-            return false;
-            }
-        return true;
-        }
-        if (payment === 'paypal' || payment === 'bitcoin') {
-            if ( valName() && valMail() && valCheckbox()) {
-                alert("The form has been filled successfully");
-                return false;
-        }
-        //e.preventDefault();
-        return true;
-        }
-        if ( payment === 'credit-card') { 
-            if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
-                alert("The form has been filled successfully");
-            //e.preventDefault();
-            return true; 
-            }
-            //e.preventDefault();
-        return false;
-        }
-    }   
+
+            if (valName() && valMail() && valCheckbox() && payment === 'select_method' ) {
+               alert("Select your payment method");
+                    return false;
+                }
+                else if (payment === 'paypal' || payment === 'bitcoin') {
+                        if ( valName() && valMail() && valCheckbox()) {
+                            alert("The form has been filled successfully");
+                                return true;
+                        }
+                } else if (payment === 'credit-card') {
+                        if ( cCard() && zipC() && cvvC()) {
+                            alert("The form has been filled successfully");
+                                return true;
+                        }
+                }
+    }  
         
     // Click event for submmit the form validation
     $('#btn').click( function (e) {
-        
-        if (val() === false){
-            e.preventDefault();
-            return false;
-        } else {
-            
+        if ( val() === true ){
             return true;
         }
-            
+        e.preventDefault();  
     });
-
 })
