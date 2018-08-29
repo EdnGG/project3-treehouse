@@ -86,22 +86,26 @@ $(document).ready( ()=> {
             $('.credit-card').hide();
             $('.paypal').hide();
             $('.bitcoin').hide();
+            $("#method").show();
 
         } else if (this.value === 'bitcoin') {
             $('.bitcoin').show();
             $('.paypal').hide();
             $('.credit-card').hide();
+            $("#method").hide();
 
         } else if (this.value === 'credit-card') {
             $('.credit-card').show();
             $('#cc-num').focus();
             $('.paypal').hide();
             $('.bitcoin').hide();
+            $("#method").hide();
 
         } else if (this.value === 'paypal') {
             $('.paypal').show();
             $('.bitcoin').hide();
             $('.credit-card').hide();
+            $("#method").hide();
         }
     });
 
@@ -208,24 +212,35 @@ $(document).ready( ()=> {
             return true;
     } 
 
+    const message = () => {
+        payment = $('#payment').val()
+        if (payment === 'select_method' ){
+            $("#method").show();
+
+        } 
+       
+    }
     // validation 
     const val = () => {
 
-        let payment = $('#payment').val()
+        let payment = $('#payment').val();
 
             if (valName() && valMail() && valCheckbox() && payment === 'select_method' ) {
-                $("#method").show();
-                   return false;
-            } if (!payment === 'select_method'){
+                
+                message();
+                return false;
+            } 
+          
+            else if (payment === 'paypal' || payment === 'bitcoin' || payment === 'select_method') {
                 $("#method").hide();
-            } else if (payment === 'paypal' || payment === 'bitcoin' || payment === 'select_method') {
-                    $("#method").hide();
+                message();
                     if ( valName() && valMail() && valCheckbox()) {
                             $("#method").hide();
                             alert("The form has been filled successfully");
                                 return true;
                         }
                 } else if (payment === 'credit-card') {
+                    message();
                     $("#method").hide();
                     if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
                             alert("The form has been filled successfully");
@@ -235,7 +250,7 @@ $(document).ready( ()=> {
     }  
         
     // Click event for submmit the form validation
-    $('#btn').click( function (e) {
+    $('#btn').click( (e) => {
         if ( val() === true ){
             return true;
         }
