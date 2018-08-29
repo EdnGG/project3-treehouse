@@ -163,7 +163,8 @@ $(document).ready( ()=> {
     }
     const cCard = () => {
         const ccNum = document.getElementById('cc-num').value; 
-         if (ccNum.length !== 16 && ccNum.length !== 13 || isNaN(ccNum) || ccNum === "") {
+      //  
+      if (ccNum.length < 13 || ccNum.length > 16 || isNaN(ccNum) || ccNum === "") {
             
             console.log(' invalid credit card');
             $("#ccnum-error").show();
@@ -215,14 +216,18 @@ $(document).ready( ()=> {
             if (valName() && valMail() && valCheckbox() && payment === 'select_method' ) {
                 $("#method").show();
                    return false;
-                }
-                else if (payment === 'paypal' || payment === 'bitcoin') {
-                        if ( valName() && valMail() && valCheckbox()) {
+            } if (!payment === 'select_method'){
+                $("#method").hide();
+            } else if (payment === 'paypal' || payment === 'bitcoin' || payment === 'select_method') {
+                    $("#method").hide();
+                    if ( valName() && valMail() && valCheckbox()) {
+                            $("#method").hide();
                             alert("The form has been filled successfully");
                                 return true;
                         }
                 } else if (payment === 'credit-card') {
-                if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
+                    $("#method").hide();
+                    if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
                             alert("The form has been filled successfully");
                                 return true;
                         }
