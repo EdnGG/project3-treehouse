@@ -1,5 +1,4 @@
 $(document).ready( ()=> {
-
     // Focus on the first TextField
     $("#name").focus();
     
@@ -214,46 +213,42 @@ $(document).ready( ()=> {
 
     const message = () => {
         payment = $('#payment').val()
-        if (payment === 'select_method' ){
+        if (payment === 'select_method' ) {
+            $("#method").show();
+            console.log("payment method pop up");
+        } else {
+            console.log("payment method hide");
             $("#method").show();
 
         } 
-       
     }
+    
     // validation 
     const val = () => {
 
         let payment = $('#payment').val();
 
             if (valName() && valMail() && valCheckbox() && payment === 'select_method' ) {
-                
-                message();
                 return false;
-            } 
-          
-            else if (payment === 'paypal' || payment === 'bitcoin' || payment === 'select_method') {
-                $("#method").hide();
-                message();
-                    if ( valName() && valMail() && valCheckbox()) {
-                            $("#method").hide();
-                            alert("The form has been filled successfully");
-                                return true;
-                        }
-                } else if (payment === 'credit-card') {
-                    message();
-                    $("#method").hide();
-                    if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
-                            alert("The form has been filled successfully");
-                                return true;
-                        }
+            } else if (payment === 'paypal' || payment === 'bitcoin' || payment === 'select_method') {
+               if ( valName() && valMail() && valCheckbox()) {
+                    alert("The form has been filled successfully");
+                        return true;
                 }
+            } else if (payment === 'credit-card') {
+                  if (valName() && valMail() && valCheckbox() && cCard() && zipC() && cvvC()) {
+                            alert("The form has been filled successfully");
+                                return true;
+                    }
+            }
     }  
         
     // Click event for submmit the form validation
     $('#btn').click( (e) => {
-        if ( val() === true ){
+        if ( val() ){
             return true;
         }
-        e.preventDefault();  
+            message();
+            e.preventDefault();  
     });
 })
