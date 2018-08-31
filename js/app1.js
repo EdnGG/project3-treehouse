@@ -166,7 +166,7 @@ $(document).ready( ()=> {
     }
     const cCard = () => {
         const ccNum = document.getElementById('cc-num').value; 
-      //  
+       
       if (ccNum.length < 13 || ccNum.length > 16 || isNaN(ccNum) || ccNum === "") {
             
             console.log(' invalid credit card');
@@ -222,10 +222,8 @@ $(document).ready( ()=> {
 
         } 
     }
-    
     // validation 
     const val = () => {
-
         let payment = $('#payment').val();
 
             if (valName() && valMail() && valCheckbox() && payment === 'select_method' ) {
@@ -244,7 +242,7 @@ $(document).ready( ()=> {
     }  
         
     // Click event for submmit the form validation
-    $('#btn').click( (e) => {
+    $('#btn').click( e => {
         if ( val() ){
             return true;
         }
